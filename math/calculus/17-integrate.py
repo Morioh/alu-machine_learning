@@ -52,6 +52,10 @@ def poly_integral(poly, C=0):
     if not isinstance(poly, list) or not all(isinstance(coef, (int, float)) for coef in poly) or not isinstance(C, (int, float)):
         return None
 
+    # Handle the case where poly is empty and C is zero
+    if not poly and C == 0:
+        return [0]
+
     # Calculate the integral, including C as the first term
     integral = [C] + [coef / (i + 1) for i, coef in enumerate(poly)]
 
@@ -59,13 +63,13 @@ def poly_integral(poly, C=0):
     integral = [int(coef) if isinstance(coef, float)
                 and coef.is_integer() else coef for coef in integral]
 
-    # If the polynomial is not empty, remove trailing zeros
-    if poly:
-        integral = integral if integral[-1] != 0 else integral[:-1]
+    # Remove trailing zeros, but ensure at least one zero remains if all are zeros
+    while len(integral) > 1 and integral[-1] == 0:
+        integral.pop()
 
-    # If the list ends up empty or only contains [C] where C is zero, return [0]
-    if not integral or (len(integral) == 1 and integral[0] == 0):
-        return None
+    # If the integral calculation results in an empty list, or the integral is effectively zero, return [0]
+    if not integral:
+        return [0]
 
     return integral
 
