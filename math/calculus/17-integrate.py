@@ -49,27 +49,25 @@ def poly_integral(poly, C=0):
     """
 
     # Check if inputs are valid
-    if not isinstance(poly, list) or not all(isinstance(coef, (int, float)) for coef in poly):
-        return None
-    if not isinstance(C, (int, float)):
+    if not isinstance(poly, list) or not all(isinstance(coef, (int, float)) for coef in poly) or not isinstance(C, (int, float)):
         return None
 
-    # Early return for invalid or specific conditions
-    if not poly and C == 0:
-        # If poly is empty and C is 0, and if this is a condition to return None
-        return None
+    # Calculate the integral, including C as the first term
+    integral = [C] + [coef / (i + 1) for i, coef in enumerate(poly)]
 
-    # Proceed with calculation if poly is not empty or C is not 0
-    if poly or C != 0:
-        integral = [C] + [coef / (i + 1) for i, coef in enumerate(poly)]
-        integral = [int(coef) if isinstance(coef, float)
-                    and coef.is_integer() else coef for coef in integral]
-        # Remove trailing zeros, if any, except when the integral is solely [0]
-        integral = [coef for coef in integral if coef != 0] or [0]
-        return integral
+    # Convert to integer if the float coefficient is an integer
+    integral = [int(coef) if isinstance(coef, float)
+                and coef.is_integer() else coef for coef in integral]
 
-    # If none of the above conditions are met, but there's still a reason to return None
-    return None
+    # If the polynomial is not empty, remove trailing zeros
+    if poly:
+        integral = integral if integral[-1] != 0 else integral[:-1]
+
+    # If the list ends up empty or only contains [C] where C is zero, return [0]
+    if not integral or (len(integral) == 1 and integral[0] == 0):
+        return [0]
+
+    return integral
 
 
 # Example usage
