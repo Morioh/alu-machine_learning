@@ -17,7 +17,7 @@ inputs, see the docstring of the `summation_i_squared` function.
 
 def summation_i_squared(n):
     """
-    Calculate the sum of squares of the first n positive integers using a 
+    Calculate the sum of squares of the first n positive integers using a
     specific formula to ensure efficiency and avoid iterative summation.
 
     Parameters:
