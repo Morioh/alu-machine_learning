@@ -48,20 +48,24 @@ def poly_integral(poly, C=0):
     a constant of 2, resulting in [2, 3, 0, 0.333...].
     """
 
-    # Check if poly and C are valid
+    # Check if inputs are valid
     if not isinstance(poly, list) or not all(isinstance(coef, (int, float)) for coef in poly) or not isinstance(C, (int, float)):
         return None
 
-    # Check if the polynomial is empty
-    if not poly:
-        return [C] if isinstance(C, int) else [float(C)]
-
-    # Calculate the integral
+    # Calculate the integral, including C as the first term
     integral = [C] + [coef / (i + 1) for i, coef in enumerate(poly)]
 
-    # Convert to integer if possible, ensuring coef is treated as a float before checking is_integer()
+    # Convert to integer if the float coefficient is an integer
     integral = [int(coef) if isinstance(coef, float)
                 and coef.is_integer() else coef for coef in integral]
+
+    # If the polynomial is not empty, remove trailing zeros
+    if poly:
+        integral = integral if integral[-1] != 0 else integral[:-1]
+
+    # If the list ends up empty or only contains [C] where C is zero, return [0]
+    if not integral or (len(integral) == 1 and integral[0] == 0):
+        return [0]
 
     return integral
 
