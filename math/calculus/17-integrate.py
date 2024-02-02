@@ -20,8 +20,8 @@ and handle polynomials of varying degrees, can be found within the
 
 def poly_integral(poly, C=0):
     """
-    Calculates the integral of a polynomial represented as a list of coefficients,
-    with an optional constant of integration.
+    Calculates the integral of a polynomial represented as a list of
+    coefficients, with an optional constant of integration.
 
     Polynomials should be in the form [a_n, a_{n-1}, ..., a_2, a_1, a_0], where
     a_n is the coefficient for the x^n term. The integral is computed following
@@ -65,11 +65,13 @@ def poly_integral(poly, C=0):
 
     # If the list ends up empty or only contains [C] where C is zero, return [0]
     if not integral or (len(integral) == 1 and integral[0] == 0):
-        return [0]
+        return None
 
     return integral
 
 
 # Example usage
-# print(poly_integral([5, 3, 0, 1], 0))  # Output should be [0, 5, 1.5, 0, 0.25]
-# print(poly_integral([3, 0, 1], 2))  # Output should be [2, 3, 0, 0.333...]
+# print(poly_integral([5, 3, 0, 1], 0))
+# Output should be [0, 5, 1.5, 0, 0.25]
+# print(poly_integral([3, 0, 1], 2))
+# Output should be [2, 3, 0, 0.333...]
