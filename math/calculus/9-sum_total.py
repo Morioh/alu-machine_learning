@@ -1,34 +1,31 @@
 #!/usr/bin/env python3
 
 """
-This module offers a mathematical utility to calculate the sum of squares of the
-first n positive integers. It utilizes a well-known mathematical formula for
-efficiency, avoiding iterative summation.
+Offers a utility to calculate the sum of squares of the first n positive
+integers using a known mathematical formula, thus avoiding iterative
+summation.
 
-The main function, `summation_i_squared`, is designed for accuracy and safety,
-returning None for inputs that are not positive integers. This functionality
-makes the module suitable for various mathematical and educational purposes,
-where such calculations are frequently required.
+The `summation_i_squared` function is accurate and safe, returning None for
+non-positive integer inputs. This feature renders the module useful for
+mathematical and educational applications where such calculations are
+common.
 
-Examples of how to use the `summation_i_squared` function, including handling of
-both valid and invalid inputs, are detailed within the function's docstring.
+For examples and detailed usage, including handling of valid and invalid
+inputs, see the docstring of the `summation_i_squared` function.
 """
 
 
 def summation_i_squared(n):
     """
-    Calculate the sum of the squares of the first n positive integers.
-
-    This function uses the formula:
-        sum(i^2 for i in range(1, n+1)) = n(n + 1)(2n + 1) / 6
+    Calculate the sum of squares of the first n positive integers using a 
+    specific formula to ensure efficiency and avoid iterative summation.
 
     Parameters:
-    - n (int): The number of initial positive integers to include in the sum.
+    - n (int): Number of initial positive integers for the summation.
 
     Returns:
-    - int or None: The sum of the squares of the first n positive integers if 
-    n is a positive integer.
-      Returns None if n is not an integer or is less than or equal to 0.
+    - int or None: Sum of the squares if n is a positive integer, else None
+    if n is not an integer or is non-positive.
 
     Example Usage:
     >>> summation_i_squared(5)

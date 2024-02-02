@@ -1,41 +1,41 @@
 #!/usr/bin/env python3
 
 """
-This module provides functionality for calculus operations on polynomials,
-specifically integrating polynomials. Polynomials are represented as lists
-of coefficients, from the highest power's coefficient to the constant term.
+This module offers functionality for performing calculus operations on
+polynomials, with an emphasis on integration. It allows polynomials to be
+represented as lists of coefficients, ordered from the coefficient of the
+highest power down to the constant term.
 
-The `poly_integral` function computes the indefinite integral of a given
-polynomial, including an optional constant of integration. This is aimed at
-supporting educational and computational tasks involving polynomial calculus,
-offering a straightforward integration method without requiring symbolic
-computation libraries.
+The core feature, `poly_integral`, calculates the indefinite integral of a
+specified polynomial and includes an option to add a constant of integration.
+This functionality is particularly useful for educational and computational
+endeavors that involve polynomial calculus, providing a direct approach to
+integration without the need for symbolic computation tools.
 
-Usage examples for the `poly_integral` function, handling the constant of
-integration, and processing polynomials of various degrees are included
-within the function's docstring.
+Detailed usage examples, including how to manage the constant of integration
+and handle polynomials of varying degrees, can be found within the
+`poly_integral` function's docstring.
 """
 
 
 def poly_integral(poly, C=0):
     """
-    Calculate the integral of a polynomial represented as a list of coefficients,
+    Calculates the integral of a polynomial represented as a list of coefficients,
     with an optional constant of integration.
 
-    The polynomial is assumed to be in the form [a_n, a_{n-1}, ..., a_2, a_1, a_0],
-    where a_n is the coefficient of the x^n term. The integral is calculated based
-    on standard calculus rules and returned as a list of coefficients in the same
-    format, with the constant of integration as the first term.
+    Polynomials should be in the form [a_n, a_{n-1}, ..., a_2, a_1, a_0], where
+    a_n is the coefficient for the x^n term. The integral is computed following
+    standard calculus rules and returned as a list of coefficients, including
+    the constant of integration as the first term.
 
     Parameters:
-    - poly (list): A list of integers or floats representing the coefficients of
-                   a polynomial, starting with the coefficient of the highest power of x.
-    - C (int, float, optional): The constant of integration. Defaults to 0.
+    - poly (list): List of integers or floats representing the coefficients,
+    starting from the highest power of x.
+    - C (int, float, optional): Constant of integration, defaulting to 0.
 
     Returns:
-    - list: A list of coefficients representing the integral of the polynomial.
-            If the input list is empty, returns a list containing only the constant of integration.
-            Returns None if the inputs are not valid (i.e., poly is not a list of numbers or C is not a number).
+    - list: Coefficients list of the integral. Returns [C] if the input list is
+    empty. Returns None for invalid inputs (non-list or C not a number).
 
     Example Usage:
     >>> poly_integral([5, 3, 0, 1], 0)
@@ -43,9 +43,9 @@ def poly_integral(poly, C=0):
     >>> poly_integral([3, 0, 1], 2)
     [2, 3, 0, 0.333...]
 
-    The first example corresponds to the integral of 5x^3 + 3x^2 + 0x + 1 with a constant of integration 0,
-    resulting in 5x^4/4 + 3x^3/3 + 0x^2/2 + x + 0. The coefficients are returned as [0, 5, 1.5, 0, 0.25].
-    The second example shows the integral of 3x^2 + 0x + 1 with a constant of integration 2.
+    The first example integrates 5x^3 + 3x^2 + 0x + 1 with a constant of 0,
+    resulting in [0, 5, 1.5, 0, 0.25]. The second integrates 3x^2 + 0x + 1 with
+    a constant of 2, resulting in [2, 3, 0, 0.333...].
     """
 
     # Check if poly and C are valid
