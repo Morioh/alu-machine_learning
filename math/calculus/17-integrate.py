@@ -50,5 +50,5 @@ def poly_integral(poly, C=0):
 
 
 # Example usage
-print(poly_integral([5, 3, 0, 1], 0))  # Output should be [0, 5, 1.5, 0, 0.25]
-print(poly_integral([3, 0, 1], 2))  # Output should be [2, 3, 0, 0.333...]
+# print(poly_integral([5, 3, 0, 1], 0))  # Output should be [0, 5, 1.5, 0, 0.25]
+# print(poly_integral([3, 0, 1], 2))  # Output should be [2, 3, 0, 0.333...]

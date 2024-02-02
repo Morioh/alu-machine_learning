@@ -43,6 +43,6 @@ def poly_derivative(poly):
 
 # Example usage
 # Output should be [3, 0, 3], which corresponds to 3x^2 + 0x + 3
-print(poly_derivative([5, 3, 0, 1]))
+# print(poly_derivative([5, 3, 0, 1]))
 # Output should be [0], because the derivative of a constant is 0
-print(poly_derivative([3]))
+# print(poly_derivative([3]))

@@ -27,5 +27,5 @@ def summation_i_squared(n):
 
 
 # Example usage
-print(summation_i_squared(5))  # Should return 55
-print(summation_i_squared(-1))  # Should return None
+# print(summation_i_squared(5))  # Should return 55
+# print(summation_i_squared(-1))  # Should return None
