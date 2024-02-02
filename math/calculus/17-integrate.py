@@ -54,8 +54,7 @@ def poly_integral(poly, C=0):
 
     # Check if the polynomial is empty
     if not poly:
-        # Return [C] if C is non-zero, otherwise return [0]
-        return [C] if C != 0 else [0]
+        return [C] if isinstance(C, int) else [float(C)]
 
     # Calculate the integral
     integral = [C] + [coef / (i + 1) for i, coef in enumerate(poly)]
@@ -63,9 +62,6 @@ def poly_integral(poly, C=0):
     # Convert to integer if possible, ensuring coef is treated as a float before checking is_integer()
     integral = [int(coef) if isinstance(coef, float)
                 and coef.is_integer() else coef for coef in integral]
-
-    # Remove trailing zeros if any, from the calculated integral, except when integral is solely [0]
-    integral = [coef for coef in integral if coef != 0] or [0]
 
     return integral
 
