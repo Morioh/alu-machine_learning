@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
 
 """
-This module provides functionality for mathematical operations on polynomials,
-specifically calculating the derivative of a polynomial. Polynomials are represented
-as lists of coefficients in decreasing order of power. The module includes a function
-`poly_derivative` that computes the derivative of a given polynomial and returns it
-in the same format.
+This module offers functionality for performing mathematical operations on
+polynomials, with a focus on calculating their derivatives. It represents
+polynomials as lists of coefficients, ordered by decreasing power.
 
-The purpose of this module is to facilitate operations on polynomials that are commonly
-required in calculus and algebra, making it a useful tool for educational purposes,
-mathematical software applications, and anywhere polynomial calculus is needed.
+The primary functionality is provided through the `poly_derivative` function,
+which calculates a polynomial's derivative and returns the result in a similar
+list format. This capability is essential for tasks in calculus and algebra,
+making the module suitable for educational purposes, mathematical software
+applications, and other contexts requiring polynomial calculus.
 
-Example usage and function details are provided within the function's docstring, illustrating
-how to calculate derivatives of polynomials represented by lists of coefficients.
+Details on using the `poly_derivative` function and examples are included within
+the function's docstring, demonstrating the calculation of derivatives for
+polynomials represented as lists of coefficients.
 """
 
 

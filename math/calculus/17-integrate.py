@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
 
 """
-This module offers functionality for performing calculus operations on polynomials,
-specifically for calculating the integral of a polynomial. A polynomial is represented
-as a list of coefficients, ordered from the coefficient of the highest power to the constant term.
-The module provides the `poly_integral` function, which computes the indefinite integral
-of the input polynomial and includes an optional constant of integration.
+This module provides functionality for calculus operations on polynomials,
+specifically integrating polynomials. Polynomials are represented as lists
+of coefficients, from the highest power's coefficient to the constant term.
 
-The aim of this module is to support educational and computational tasks that involve
-polynomial calculus, providing a straightforward method for integrating polynomials
-without the need for symbolic computation libraries.
+The `poly_integral` function computes the indefinite integral of a given
+polynomial, including an optional constant of integration. This is aimed at
+supporting educational and computational tasks involving polynomial calculus,
+offering a straightforward integration method without requiring symbolic
+computation libraries.
 
-Examples of how to use the `poly_integral` function, including handling of the constant
-of integration and processing of polynomials of various degrees, are provided within
-the function's docstring.
+Usage examples for the `poly_integral` function, handling the constant of
+integration, and processing polynomials of various degrees are included
+within the function's docstring.
 """
 
 

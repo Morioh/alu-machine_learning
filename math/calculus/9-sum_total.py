@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 
 """
-This module provides a mathematical utility function for calculating the sum of the squares
-of the first n positive integers. The calculation is based on a well-known mathematical formula,
-making the operation efficient and avoiding the need for iterative summation.
+This module offers a mathematical utility to calculate the sum of squares of the
+first n positive integers. It utilizes a well-known mathematical formula for
+efficiency, avoiding iterative summation.
 
-The primary function in this module, `summation_i_squared`, is designed to be both accurate and
-safe, returning None for any input that is not a positive integer. This makes the module useful
-in a variety of mathematical and educational applications where such calculations are required.
+The main function, `summation_i_squared`, is designed for accuracy and safety,
+returning None for inputs that are not positive integers. This functionality
+makes the module suitable for various mathematical and educational purposes,
+where such calculations are frequently required.
 
-Example usage is provided within the function's docstring, illustrating how to call the function
-and what kind of output can be expected for valid and invalid inputs.
+Examples of how to use the `summation_i_squared` function, including handling of
+both valid and invalid inputs, are detailed within the function's docstring.
 """
 
 
