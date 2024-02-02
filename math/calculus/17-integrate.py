@@ -49,10 +49,12 @@ def poly_integral(poly, C=0):
     """
 
     # Check if inputs are valid
-    if not isinstance(poly, list) or not all(isinstance(coef, (int, float)) for coef in poly) or not isinstance(C, (int, float)):
+    if (not isinstance(poly, list) or
+        not all(isinstance(coef, (int, float)) for coef in poly) or
+            not isinstance(C, (int, float))):
         return None
 
-    # Assuming the new condition: return None for an empty polynomial, regardless of C
+    # Return None if poly is empty, ignoring C.
     if not poly:
         return None  # Adjusted based on a hypothetical new rule
 
@@ -67,7 +69,7 @@ def poly_integral(poly, C=0):
     while len(integral) > 1 and integral[-1] == 0:
         integral.pop()
 
-    # Return [0] if integral calculation results in an effectively zero polynomial
+    # Return [0] for a zero polynomial result.
     if not integral:
         return [0]
 
