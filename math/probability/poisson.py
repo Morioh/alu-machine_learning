@@ -1,5 +1,16 @@
 #!/usr/bin/env python3
 # poisson.py
+
+"""
+A module to represent and calculate properties of the Poisson distribution.
+
+This module provides the Poisson class, which encapsulates the functionality
+for representing a Poisson distribution. It includes methods for initializing
+the distribution with either raw data or a specific lambda (λ) value, which
+represents the expected number of occurrences within a given time frame.
+"""
+
+
 class Poisson:
     """
     Represents a Poisson distribution, characterized by lambtha, the expected
