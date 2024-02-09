@@ -37,19 +37,24 @@ class Binomial:
                 raise TypeError("data must be a list")
             if len(data) < 2:
                 raise ValueError("data must contain multiple values")
-
-            # Calculate p as the total successes divided by the total #trials
-            total_successes = sum(data)
-            total_trials = len(data) * max(data)  # Estimate of total trials
-            self.p = total_successes / total_trials
-
-            # Assume each data point a success count for a fixed #trials
-            # Average success rate to estimate p directly, then estimating n
-            average_successes = total_successes / len(data)
-            # Use the highest success count as an estimate for n
-            self.p = average_successes / max(data)
-            # Assuming the max value in data approximates n
             self.n = round(max(data))
+            self.p = sum(data) / (len(data) * self.n)
 
-            # Recalculate p using the newly estimated n for a better estimate
-            self.p = total_successes / (self.n * len(data))
+    def factorial(self, num):
+        if num == 0 or num == 1:
+            return 1
+        else:
+            return num * self.factorial(num - 1)
+
+    def binomial_coefficient(self, n, k):
+        return self.factorial(n) / (self.factorial(k) * self.factorial(n - k))
+
+    def pmf(self, k):
+        k = int(k)  # Ensure k is an integer
+        if k < 0 or k > self.n:
+            return 0  # k is out of range
+
+        binom_coeff = self.binomial_coefficient(self.n, k)
+        pmf_value = binom_coeff * (self.p ** k) * \
+            ((1 - self.p) ** (self.n - k))
+        return pmf_value
