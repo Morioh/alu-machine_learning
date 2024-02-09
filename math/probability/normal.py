@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-#!/usr/bin/env python3
-
 """
 Module for representing and analyzing normal (Gaussian) distributions.
 
