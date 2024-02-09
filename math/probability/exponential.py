@@ -20,16 +20,7 @@ class Exponential:
 
     def __init__(self, data=None, lambtha=1.):
         """
-        Initializes the Exponential instance with a specific lambtha value.
-
-        Args:
-            data (list, optional): Data to estimate the distribution.
-            lambtha (float, optional): Expected number of occurrences.
-
-        Raises:
-            ValueError: If lambtha is not a positive value or data does not
-                        contain multiple values.
-            TypeError: If data is not a list.
+        Initializes the Exponential instance with data or a specific lambtha value.
         """
         if data is None:
             if lambtha <= 0:
@@ -40,5 +31,20 @@ class Exponential:
                 raise TypeError("data must be a list")
             if len(data) < 2:
                 raise ValueError("data must contain multiple values")
-            # Calculate lambtha as the reciprocal of the mean of the data
             self.lambtha = 1 / float(sum(data) / len(data))
+
+    def pdf(self, x):
+        """
+        Calculates the PDF value for a given time period.
+
+        Args:
+            x (float): The time period.
+
+        Returns:
+            float: The PDF value for x, or 0 if x is out of range.
+        """
+        if x < 0:
+            return 0
+
+        e = 2.7182818285
+        return self.lambtha * (e ** (-self.lambtha * x))
