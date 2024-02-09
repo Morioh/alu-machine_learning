@@ -19,11 +19,6 @@ Classes:
 
 
 class Binomial:
-    """
-    Represents a binomial distribution, characterized by parameters n
-    and p (probability of success).
-    """
-
     def __init__(self, data=None, n=1, p=0.5):
         if data is None:
             if n <= 0:
@@ -38,15 +33,18 @@ class Binomial:
             if len(data) < 2:
                 raise ValueError("data must contain multiple values")
 
-            # Calculate p as the average number of successes per trial
-            # Assume each entry in data represents the successes in a trial
-            successes = sum(data)
-            # Estimate total trials based on maximum successes observed
-            trials = len(data) * max(data)
-            self.p = successes / trials  # Initial estimate for p
+            # Calculate p as the total successes divided by the total #trials
+            total_successes = sum(data)
+            total_trials = len(data) * max(data)  # Estimate of total trials
+            self.p = total_successes / total_trials
 
-            # Estimate n as the total number of trials (rounded)
-            self.n = round(trials / max(data))
+            # Assume each data point a success count for a fixed #trials
+            # Average success rate to estimate p directly, then estimating n
+            average_successes = total_successes / len(data)
+            # Use the highest success count as an estimate for n
+            self.p = average_successes / max(data)
+            # Assuming the max value in data approximates n
+            self.n = round(max(data))
 
-            # Recalculate p using the newly estimated n
-            self.p = successes / (self.n * len(data))
+            # Recalculate p using the newly estimated n for a better estimate
+            self.p = total_successes / (self.n * len(data))
