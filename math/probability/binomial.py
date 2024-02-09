@@ -19,6 +19,11 @@ Classes:
 
 
 class Binomial:
+    """
+    Represents a binomial distribution, characterized by parameters n
+    and p (probability of success).
+    """
+
     def __init__(self, data=None, n=1, p=0.5):
         if data is None:
             if n <= 0:
