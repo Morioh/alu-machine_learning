@@ -16,6 +16,9 @@ Classes:
 """
 
 
+import math
+
+
 class Normal:
     """
     Represents a normal (Gaussian) distribution, characterized by the mean
@@ -24,7 +27,7 @@ class Normal:
 
     def __init__(self, data=None, mean=0., stddev=1.):
         """
-        Initializes the Normal instance with specific mean and stddev values.
+        Initializes the Normal instance with data or specific mean and stddev values.
         """
         if data is None:
             if stddev <= 0:
@@ -43,23 +46,25 @@ class Normal:
     def z_score(self, x):
         """
         Calculates the z-score of a given x-value.
-
-        Args:
-            x (float): The x-value.
-
-        Returns:
-            float: The z-score of x.
         """
         return (x - self.mean) / self.stddev
 
     def x_value(self, z):
         """
         Calculates the x-value of a given z-score.
-
-        Args:
-            z (float): The z-score.
-
-        Returns:
-            float: The x-value of z.
         """
         return self.mean + z * self.stddev
+
+    def pdf(self, x):
+        """
+        Calculates the PDF value for a given x-value.
+
+        Args:
+            x (float): The x-value.
+
+        Returns:
+            float: The PDF value for x.
+        """
+        part1 = 1 / (self.stddev * math.sqrt(2 * math.pi))
+        part2 = math.exp(-0.5 * ((x - self.mean) / self.stddev) ** 2)
+        return part1 * part2
