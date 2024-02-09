@@ -1,16 +1,21 @@
 #!/usr/bin/env python3
 
 """
-Defines the Poisson class for Poisson distribution properties.
+Module for Poisson distribution properties via the Poisson class.
 
-The Poisson distribution expresses the probability of a given number of events
-occurring in a fixed interval, assuming a constant mean rate and independence
-from the last event. This module allows initializing the distribution with data
-or a specified mean rate (lambda) and computing the probability mass function
-(PMF) for a given number of occurrences.
+This module enables analyzing the Poisson distribution, which represents
+the likelihood of a number of events occurring within a fixed time frame,
+assuming a constant rate of occurrence (lambda) and independence of events.
+It allows initializing the distribution based on data or a specific lambda
+value and offers methods to compute the probability mass function (PMF) and
+cumulative distribution function (CDF) for specified occurrence counts.
+
+The PMF method calculates the probability of observing an exact number of
+successes, while the CDF method provides the probability of observing up to
+a certain number of successes, enriching the distribution's analytical scope.
 
 Classes:
-    Poisson: Manages a Poisson distribution.
+    Poisson: Facilitates PMF and CDF calculations for Poisson distributions.
 """
 
 
@@ -22,7 +27,7 @@ class Poisson:
 
     def __init__(self, data=None, lambtha=1.):
         """
-        Initializes the Poisson instance with data.
+        Initializes the Poisson instance with data or a specific lambtha value.
         """
         if data is None:
             if lambtha <= 0:
@@ -37,13 +42,7 @@ class Poisson:
 
     def pmf(self, k):
         """
-        Calculates the value of the PMF for a given number of successes.
-
-        Args:
-            k (int): The number of successes.
-
-        Returns:
-            float: The PMF value for k.
+        Calculates the PMF value for a given number of successes.
         """
         if not isinstance(k, int):
             k = int(k)
@@ -52,10 +51,31 @@ class Poisson:
             return 0
 
         e = 2.7182818285
-        lambtha_k_factorial = 1
+        factorial = 1
         for i in range(1, k + 1):
-            lambtha_k_factorial *= i
+            factorial *= i
 
-        pmf_value = (self.lambtha ** k) * \
-            (e ** (-self.lambtha)) / lambtha_k_factorial
+        pmf_value = (self.lambtha ** k) * (e ** (-self.lambtha)) / factorial
         return pmf_value
+
+    def cdf(self, k):
+        """
+        Calculates the CDF value for a given number of successes.
+
+        Args:
+            k (int): The number of successes.
+
+        Returns:
+            float: The CDF value for k.
+        """
+        if not isinstance(k, int):
+            k = int(k)
+
+        if k < 0:
+            return 0
+
+        cdf_value = 0
+        for i in range(k + 1):
+            cdf_value += self.pmf(i)
+
+        return cdf_value
