@@ -20,7 +20,7 @@ class Exponential:
 
     def __init__(self, data=None, lambtha=1.):
         """
-        Initializes the Exponential instance with data or a specific lambtha value.
+        Initializes the Exponential instance with a specific lambtha value.
         """
         if data is None:
             if lambtha <= 0:
