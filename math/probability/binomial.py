@@ -41,15 +41,43 @@ class Binomial:
             self.p = sum(data) / (len(data) * self.n)
 
     def factorial(self, num):
+        """
+        Computes factorial of num.
+
+        Parameters:
+            num (int): A non-negative integer.
+
+        Returns:
+            int: Factorial of num.
+        """
         if num == 0 or num == 1:
             return 1
         else:
             return num * self.factorial(num - 1)
 
     def binomial_coefficient(self, n, k):
+        """
+        Computes binomial coefficient for (n, k).
+
+        Parameters:
+            n (int): Number of trials.
+            k (int): Number of successes.
+
+        Returns:
+            float: Binomial coefficient.
+        """
         return self.factorial(n) / (self.factorial(k) * self.factorial(n - k))
 
     def pmf(self, k):
+        """
+        Computes PMF for k successes in n trials.
+
+        Parameters:
+            k (int): Number of successes.
+
+        Returns:
+            float: PMF value.
+        """
         k = int(k)  # Ensure k is an integer
         if k < 0 or k > self.n:
             return 0  # k is out of range
