@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import math
 
 """
 Module for representing and analyzing normal (Gaussian) distributions.
@@ -14,9 +15,6 @@ data, ensuring flexibility in statistical and probabilistic analysis.
 Classes:
     Normal: Models a normal distribution with methods for statistical analysis.
 """
-
-
-import math
 
 
 class Normal:
