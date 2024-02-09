@@ -27,7 +27,7 @@ class Normal:
 
     def __init__(self, data=None, mean=0., stddev=1.):
         """
-        Initializes the Normal instance with data or specific mean and stddev values.
+        Initializes the Normal instance with specific mean and stddev values.
         """
         if data is None:
             if stddev <= 0:
