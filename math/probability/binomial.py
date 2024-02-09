@@ -1,26 +1,26 @@
 #!/usr/bin/env python3
 
 """
-This module defines the Binomial class for representing and analyzing data 
-using the binomial distribution. The binomial distribution describes the 
-number of successes in a fixed number of independent Bernoulli trials, 
+This module defines the Binomial class for representing and analyzing data
+using the binomial distribution. The binomial distribution describes the
+number of successes in a fixed number of independent Bernoulli trials,
 each with the same probability of success.
 
-The Binomial class can be initialized directly with the number of trials 
-(n) and the probability of success (p), or it can estimate these parameters 
-from provided data. This flexibility makes the class useful for both 
-theoretical studies and practical data analysis where parameters are not 
+The Binomial class can be initialized directly with the number of trials
+(n) and the probability of success (p), or it can estimate these parameters
+from provided data. This flexibility makes the class useful for both
+theoretical studies and practical data analysis where parameters are not
 known a priori.
 
 Classes:
-    Binomial: Models a binomial distribution with methods to estimate 
+    Binomial: Models a binomial distribution with methods to estimate
     parameters and calculate distribution properties.
 """
 
 
 class Binomial:
     """
-    Represents a binomial distribution, characterized by parameters n (number of trials)
+    Represents a binomial distribution, characterized by parameters n
     and p (probability of success).
     """
 
@@ -41,11 +41,9 @@ class Binomial:
             if len(data) < 2:
                 raise ValueError("data must contain multiple values")
 
-            # Calculate p as the mean of data divided by the maximum value in data
+            # Calculate p as the mean of data divided by the maximum value
             self.p = sum(data) / (len(data) * max(data))
             # Estimate n as the rounded maximum value in data
             self.n = round(max(data))
             # Recalculate p using the new n value
             self.p = sum(data) / (len(data) * self.n)
-
-    # Additional methods for the Binomial class can be defined here, such as pmf, cdf, etc.
