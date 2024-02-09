@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import math
 
 """
 Module for representing and analyzing normal (Gaussian) distributions.
@@ -22,6 +21,9 @@ class Normal:
     Represents a normal (Gaussian) distribution, characterized by the mean
     and standard deviation of the distribution.
     """
+
+    PI = 3.141592653589793
+    E = 2.718281828459045
 
     def __init__(self, data=None, mean=0., stddev=1.):
         """
@@ -55,7 +57,7 @@ class Normal:
 
     def pdf(self, x):
         """
-        Calculates the PDF value for a given x-value.
+        Calculates the PDF value for a given x-value without math module.
 
         Args:
             x (float): The x-value.
@@ -63,6 +65,7 @@ class Normal:
         Returns:
             float: The PDF value for x.
         """
-        part1 = 1 / (self.stddev * math.sqrt(2 * math.pi))
-        part2 = math.exp(-0.5 * ((x - self.mean) / self.stddev) ** 2)
+        part1 = 1 / (self.stddev * ((2 * self.PI) ** 0.5))
+        exponent = -0.5 * (((x - self.mean) / self.stddev) ** 2)
+        part2 = self.E ** exponent
         return part1 * part2
