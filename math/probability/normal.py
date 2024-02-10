@@ -39,17 +39,24 @@ class Normal:
             TypeError: If data is not a list.
         """
         if data is None:
-            if stddev <= 0:
+            if stddev < 1:
                 raise ValueError("stddev must be a positive value")
-            self.mean, self.stddev = float(mean), float(stddev)
+            else:
+                self.stddev = float(stddev)
+                self.mean = float(mean)
         else:
-            if not isinstance(data, list):
+            if type(data) is not list:
                 raise TypeError("data must be a list")
-            if len(data) < 2:
+            elif len(data) < 2:
                 raise ValueError("data must contain multiple values")
-            self.mean = sum(data) / len(data)
-            self.stddev = (
-                sum((x - self.mean) ** 2 for x in data) / len(data)) ** 0.5
+            else:
+                mean = float(sum(data) / len(data))
+                self.mean = mean
+                summation = 0
+                for x in data:
+                    summation += ((x - mean) ** 2)
+                stddev = (summation / len(data)) ** (1 / 2)
+                self.stddev = stddev
 
     def z_score(self, x):
         """Calculates the z-score of a given x-value."""
@@ -61,15 +68,25 @@ class Normal:
 
     def pdf(self, x):
         """Calculates the PDF for a given x-value."""
-        from math import exp, sqrt, pi
-        return (1 / (self.stddev * sqrt(2 * pi))) * exp(-0.5 * ((x - self.mean) / self.stddev) ** 2)
+        mean = self.mean
+        stddev = self.stddev
+        e = 2.7182818285
+        pi = 3.1415926536
+        power = -0.5 * (self.z_score(x) ** 2)
+        coefficient = 1 / (stddev * ((2 * pi) ** (1 / 2)))
+        pdf = coefficient * (e ** power)
+        return pdf
 
     def cdf(self, x):
         """
         Calculates the CDF for a given x-value using a numerical approximation.
         """
-        # Importing here to avoid global dependency
-        from math import erf, sqrt
-
-        # Utilizing the error function (erf) for CDF calculation
-        return 0.5 * (1 + erf((x - self.mean) / (self.stddev * sqrt(2))))
+        mean = self.mean
+        stddev = self.stddev
+        pi = 3.1415926536
+        value = (x - mean) / (stddev * (2 ** (1 / 2)))
+        val = value - ((value ** 3) / 3) + ((value ** 5) / 10)
+        val = val - ((value ** 7) / 42) + ((value ** 9) / 216)
+        val *= (2 / (pi ** (1 / 2)))
+        cdf = (1 / 2) * (1 + val)
+        return cdf
