@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-import numpy as np
 """
     A function def
     convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
     that performs a convolution on grayscale images:
 """
+import numpy as np
 
 
 def convolve_grayscale(images, kernel, padding="same", stride=(1, 1)):
