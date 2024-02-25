@@ -44,7 +44,8 @@ def cofactor(matrix):
     for i in range(len(matrix)):
         cofactor_row = []
         for j in range(len(matrix)):
-            minor_matrix = [row[:j] + row[j + 1:] for k, row in enumerate(matrix)
+            minor_matrix = [row[:j] + row[j + 1:] for k,
+                            row in enumerate(matrix)
                             if k != i]
             minor_det = determinant(minor_matrix)
             cofactor_value = ((-1) ** (i + j)) * minor_det
