@@ -47,4 +47,3 @@ class MultiNormal():
         pdf = pdf[0][0]
 
         return pdf
-    
