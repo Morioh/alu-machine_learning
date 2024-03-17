@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 '''
-    a function def marginal(x, n, P, Pr):
-    that calculates the marginal probability of obtaining
-    the number of successes x in n trials
-    with probability of success in each trial being p
+    a function def posterior(x, n, P, Pr):
+    that calculates the posterior probability
+    of obtaining the data
 '''
+
 
 import numpy as np
 
 
-def marginal(x, n, P, Pr):
+def posterior(x, n, P, Pr):
     """
     Args:
         x is the number of patients that develop severe side effects
@@ -20,7 +20,7 @@ def marginal(x, n, P, Pr):
         number of patients that develop severe side effects
 
     Returns:
-        the marginal probability of obtaining x
+        the posterior probability of obtaining x
     """
     # Check if n is a positive integer
     if not isinstance(n, int) or n <= 0:
@@ -51,15 +51,23 @@ def marginal(x, n, P, Pr):
             raise ValueError("All values in P must be in the range [0, 1]")
         if Pr[value] > 1 or Pr[value] < 0:
             raise ValueError("All values in Pr must be in the range [0, 1]")
+
     if np.isclose([np.sum(Pr)], [1]) == [False]:
         raise ValueError("Pr must sum to 1")
+
     # likelihood calculated as binomial distribution
     factorial = np.math.factorial
     fact_coefficient = factorial(n) / (factorial(n - x) * factorial(x))
     likelihood = fact_coefficient * (P ** x) * ((1 - P) ** (n - x))
+
     # intersection is the likelihood times priors
     intersection = likelihood * Pr
+
     # marginal probability is the sum over all probabilities of events
     marginal = np.sum(intersection)
 
-    return marginal
+    # posterior probability is the intersection divided by marginal probability
+    posterior = intersection / marginal
+
+    # return posterior
+    return posterior
