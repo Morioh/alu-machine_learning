@@ -1,14 +1,15 @@
 -- Creates a trigger that decreases the quantity of an item after adding a new order
 -- quantity in the table `items` can be negative
-DROP TRIGGER IF EXISTS decrease_quantity;
+DROP TRIGGER IF EXISTS reset_validation;
 
 DELIMITER $$
-CREATE TRIGGER decrease_quantity
-       AFTER INSERT
-       ON `orders` FOR EACH ROW
+CREATE TRIGGER reset_validation
+       BEFORE UPDATE
+       ON `users` FOR EACH ROW
 BEGIN
-        UPDATE items SET quantity = quantity - new.number
-        WHERE items.name=new.item_name;
+	IF STRCMP(old.email, new.email) <> 0 THEN
+	   SET new.valid_email = 0;
+	END IF;
 END $$
 
 DELIMITER ;
