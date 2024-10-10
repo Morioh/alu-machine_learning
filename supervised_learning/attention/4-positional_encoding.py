@@ -1,43 +1,30 @@
 #!/usr/bin/env python3
 """
-A function that calculates the scaled dot product attention
+Defines a function that calculates the positional encoding for a transformer
 """
 
 
-import tensorflow as tf
+import numpy as np
 
 
-def sdp_attention(Q, K, V, mask=None):
+def get_angle(pos, i, dm):
     """
-    Calculates the scaled dot product attention
-
-    parameters:
-        Q [tensor with last two dimensions as (..., seq_len_q, dk)]:
-            contains the query matrix
-        K [tensor with last two dimensions as (..., seq_len_v, dk)]:
-            contains the key matrix
-        V [tensor with last two dimensions as (..., seq_len_v, dv)]:
-            contains the value matrix
-        mask [tensor that can be broadcast into (..., seq_len_q, seq_len_v)]:
-            contains the optional mask, or defaulted to None
-
-    returns:
-        outputs, weights:
-            outputs [tensor with last two dimensions as (..., seq_len_q, dv)]:
-                contains the scaled dot product attention
-            weights [tensor with last two dimensions as
-                    (..., seq_len_q, seq_len_v)]:
-                contains the attention weights
+    Calculates the angle for the positional encoding
     """
-    matmul_qk = tf.matmul(Q, K, transpose_b=True)
-    # scale matmul_qk
-    dk = tf.cast(tf.shape(K)[-1], tf.float32)
-    scaled_attention_logits = matmul_qk / tf.math.sqrt(dk)
-    # add mask to scaled tensor
-    if mask is not None:
-        scaled_attention_logits += (mask * -1e9)
-    # normalize softmax on last axis so all scores add up to 1
-    weights = tf.nn.softmax(scaled_attention_logits, axis=-1)
-    # calculate outputs
-    outputs = tf.matmul(weights, V)
-    return outputs, weights
+    angle_rates = 1 / (10000 ** (i / dm))
+    return pos * angle_rates
+
+
+def positional_encoding(max_seq_len, dm):
+    """
+    Calculates the positional encoding
+    """
+    positional_encoding = np.zeros([max_seq_len, dm])
+
+    for pos in range(max_seq_len):
+        for i in range(0, dm, 2):
+            # sin for even indices of positional_encoding
+            positional_encoding[pos, i] = np.sin(get_angle(pos, i, dm))
+            # cos for odd indices of positional_encoding
+            positional_encoding[pos, i + 1] = np.cos(get_angle(pos, i, dm))
+    return positional_encoding
