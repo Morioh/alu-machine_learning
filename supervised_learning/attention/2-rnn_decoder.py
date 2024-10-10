@@ -1,30 +1,81 @@
 #!/usr/bin/env python3
 """
-Defines a function that calculates the positional encoding for a transformer
+A class that inherits from tensorflow.keras.layers.Layer
+to decode for machine translation
 """
 
 
-import numpy as np
+import tensorflow as tf
+SelfAttention = __import__('1-self_attention').SelfAttention
 
 
-def get_angle(pos, i, dm):
+class RNNDecoder(tf.keras.layers.Layer):
     """
-    Calculates the angle for the positional encoding
+    Decodes for machine translation:
     """
-    angle_rates = 1 / (10000 ** (i / dm))
-    return pos * angle_rates
 
+    def __init__(self, vocab, embedding, units, batch):
+        """
+        Class constructor
+        Args:
+            vocab: an integer representing the size of the output vocabulary
+            embedding: an integer representing the dimensionality
+            of the embedding vector
+            units: an integer representing the number of hidden
+            units in the RNN cell
+            batch: an integer representing the batch size
+        Sets the following public instance attributes:
+            embedding: the embedding layer for the targets
+            gru: a GRU layer with units units
+            F: a Dense layer with vocab units
+        """
+        if type(vocab) is not int:
+            raise TypeError(
+                "vocab must be int representing the size of output vocabulary"
+            )
+        if type(embedding) is not int:
+            raise TypeError(
+                "embedding must be int representing dimensionality of vector"
+            )
+        if type(units) is not int:
+            raise TypeError(
+                "units must be int representing the number of hidden units"
+            )
+        if type(batch) is not int:
+            raise TypeError("batch must be int representing the batch size")
+        super(RNNDecoder, self).__init__()
+        self.embedding = tf.keras.layers.Embedding(
+            input_dim=vocab, output_dim=embedding
+        )
+        self.gru = tf.keras.layers.GRU(
+            units=units,
+            return_state=True,
+            return_sequences=True,
+            recurrent_initializer="glorot_uniform",
+        )
+        self.F = tf.keras.layers.Dense(units=vocab)
 
-def positional_encoding(max_seq_len, dm):
-    """
-    Calculates the positional encoding
-    """
-    positional_encoding = np.zeros([max_seq_len, dm])
-
-    for pos in range(max_seq_len):
-        for i in range(0, dm, 2):
-            # sin for even indices of positional_encoding
-            positional_encoding[pos, i] = np.sin(get_angle(pos, i, dm))
-            # cos for odd indices of positional_encoding
-            positional_encoding[pos, i + 1] = np.cos(get_angle(pos, i, dm))
-    return positional_encoding
+    def call(self, x, s_prev, hidden_states):
+        """
+        x: a tensor of shape (batch, input_seq_len, embedding)
+        containing the embedded input
+        s_prev: a tensor of shape (batch, units) containing
+        the previous decoder hidden state
+        hidden_states: a tensor of shape (batch, input_seq_len, units)
+        containing the outputs of the decoder
+        Returns: y, s_next
+            y: a tensor of shape (batch, target_seq_len, vocab)
+            containing the generated sequences
+            s_next: a tensor of shape (batch, units) containing
+            the next decoder hidden state
+        """
+        units = s_prev.get_shape().as_list()[1]
+        attention = SelfAttention(units)
+        context, weights = attention(s_prev, hidden_states)
+        x = self.embedding(x)
+        context = tf.expand_dims(context, 1)
+        x = tf.concat([context, x], axis=-1)
+        y, s = self.gru(x)
+        y = tf.reshape(y, (-1, y.shape[2]))
+        y = self.F(y)
+        return y, s
