@@ -1,81 +1,49 @@
-import os
-import gymnasium as gym
-from stable_baselines3 import DQN
-from stable_baselines3.common.callbacks import CheckpointCallback, EvalCallback
-from stable_baselines3.common.monitor import Monitor
-from stable_baselines3.common.vec_env import DummyVecEnv
-import tensorflow as tf
-import ale_py
+import gym
+import numpy as np
+from keras.models import Sequential
+from keras.layers import Dense, Flatten, Conv2D
+from keras.optimizers import Adam
+from keras.callbacks import ModelCheckpoint
+from rl.agents.dqn import DQNAgent
+from rl.policy import EpsGreedyQPolicy
+from rl.memory import SequentialMemory
 
-gym.register_envs(ale_py)
+# Environment setup
+ENV_NAME = 'Breakout-v0'
+env = gym.make(ENV_NAME)
+np.random.seed(123)
+env.seed(123)
+nb_actions = env.action_space.n
 
+# Building the model
+def build_model(input_shape, nb_actions):
+    model = Sequential()
+    model.add(Conv2D(32, (8, 8), strides=4, activation='relu', input_shape=input_shape))
+    model.add(Conv2D(64, (4, 4), strides=2, activation='relu'))
+    model.add(Conv2D(64, (3, 3), strides=1, activation='relu'))
+    model.add(Flatten())
+    model.add(Dense(512, activation='relu'))
+    model.add(Dense(nb_actions, activation='linear'))
+    return model
 
-def create_env(render_mode=None):
-    """Create and wrap the Breakout environment"""
-    env = gym.make("ALE/Breakout-v5", render_mode=render_mode)
-    env = Monitor(env)
-    return env
+# Define input shape (assuming the default Gym Breakout observation is RGB frames)
+input_shape = (1,) + env.observation_space.shape
+model = build_model(input_shape, nb_actions)
+print(model.summary())
 
+# Configuring the agent
+memory = SequentialMemory(limit=1000000, window_length=1)
+policy = EpsGreedyQPolicy()
+dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, policy=policy,
+               nb_steps_warmup=1000, gamma=0.99, target_model_update=1000)
+dqn.compile(Adam(learning_rate=0.00025), metrics=['mae'])
 
-def main():
-    # Create directories for saving models and logs
-    os.makedirs("models", exist_ok=True)
-    os.makedirs("logs", exist_ok=True)
+# Training the agent
+checkpoint = ModelCheckpoint('policy.h5', monitor='episode_reward', save_best_only=True, mode='max')
+dqn.fit(env, nb_steps=50000, visualize=False, verbose=2, callbacks=[checkpoint])
 
-    # Create and wrap the environment
-    env = DummyVecEnv([lambda: create_env()])
+# Saving the policy
+model.save('policy.h5')
 
-    # Create evaluation environment
-    eval_env = DummyVecEnv([lambda: create_env()])
-
-    # Initialize the DQN agent with CnnPolicy
-    model = DQN(
-        "CnnPolicy",
-        env,
-        learning_rate=1e-4,
-        buffer_size=50000,  # Size of the replay buffer
-        learning_starts=1000,  # How many steps before starting training
-        batch_size=32,
-        gamma=0.99,  # Discount factor
-        exploration_fraction=0.1,
-        exploration_initial_eps=1.0,
-        exploration_final_eps=0.05,
-        train_freq=4,  # Update the model every 4 steps
-        gradient_steps=1,
-        target_update_interval=1000,  # How often to update target network
-        verbose=1,
-        tensorboard_log="logs/"
-    )
-
-    # Set up callbacks
-    checkpoint_callback = CheckpointCallback(
-        save_freq=10000,
-        save_path="models/",
-        name_prefix="dqn_breakout"
-    )
-
-    eval_callback = EvalCallback(
-        eval_env,
-        best_model_save_path="models/best_model",
-        log_path="logs/",
-        eval_freq=10000,
-        deterministic=True,
-        render=False
-    )
-
-    # Train the agent
-    total_timesteps = 50000  # no of steps just as asked in the work
-    model.learn(
-        total_timesteps=total_timesteps,
-        callback=[checkpoint_callback, eval_callback],
-        progress_bar=True
-    )
-
-    # Save the final model
-    model.save("models/policy.zip")  # .zip for clarity
-
-    print("Training completed! Model saved as 'policy.zip'")
-
-
-if __name__ == "__main__":
-    main()
+# Test the trained agent
+dqn.test(env, nb_episodes=10, visualize=True)
